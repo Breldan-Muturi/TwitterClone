@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
         loginProgressLayout.setOnTouchListener{ v, event -> true }
     }
 
-    fun setTextChangeListener(et:EditText, til: TextInputLayout) {
+    fun setTextChangeListener (et:EditText, til: TextInputLayout) {
         et.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 
@@ -77,7 +77,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun goToSignup(v: View){
-        
+        startActivity(SignupActivity.newIntent(this))
+        finish()
     }
 
     override fun onStart() {
