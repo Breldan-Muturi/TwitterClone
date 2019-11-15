@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "39202358150",
+    "firebase_url": "https://twitter-cloe.firebaseio.com",
+    "project_id": "twitter-cloe",
+    "storage_bucket": "twitter-cloe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39202358150:android:6cf4a476c443afa771a207",
+        "android_client_info": {
+          "package_name": "turi.practice.twitterclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39202358150-bsqgknqgb288va3n8kb1tvr8jenl7qg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqCbMK9qHe1JScoIVSY3vaW_CRufC_TNE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39202358150-bsqgknqgb288va3n8kb1tvr8jenl7qg3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
