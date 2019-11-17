@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import turi.practice.twitterclone.R
 
 class SearchFragment : TwitterFragment() {
+    private var currentHashtag = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,5 +19,7 @@ class SearchFragment : TwitterFragment() {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
-
+    fun newHashtag(term: String){
+        currentHashtag = term
+    }
 }
