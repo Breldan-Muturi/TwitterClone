@@ -10,18 +10,21 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_home.*
 import turi.practice.twitterclone.R
 import turi.practice.twitterclone.fragments.HomeFragment
 import turi.practice.twitterclone.fragments.MyActivityFragment
 import turi.practice.twitterclone.fragments.SearchFragment
+import turi.practice.twitterclone.util.DATA_USERS
 
 class HomeActivity : AppCompatActivity() {
     private var sectionsPagerAdapter: SectionPagerAdapter? = null
-    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseDB = FirebaseFirestore.getInstance()
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val myActivityFragment = MyActivityFragment()
+    private var userId = FirebaseAuth.getInstance().currentUser?.uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +46,34 @@ class HomeActivity : AppCompatActivity() {
             override fun onTabSelected(p0: TabLayout.Tab?) {
             }
         })
+
+        logo.setOnClickListener{view ->
+            startActivity(ProfileActivity.newIntent(this))
+        }
     }
 
-    fun onLogout(v: View) {
-        firebaseAuth.signOut()
-        startActivity(LoginActivity.newIntent(this))
-        finish()
+    override fun onResume() {
+        super.onResume()
+        userId = FirebaseAuth.getInstance().currentUser?.uid
+        if(userId == null){
+            startActivity(LoginActivity.newIntent(this))
+            finish()
+        }
+        populate()
     }
 
+    fun populate(){
+        homeProgressLayout.visibility = View.VISIBLE
+        firebaseDB.collection(DATA_USERS).document(userId!!).get()
+            .addOnSuccessListener { documentSnapshot ->
+                homeProgressLayout.visibility = View.GONE
+                user =
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+                finish()
+            }
+    }
     inner class SectionPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
         override fun getItem(position: Int): Fragment {
             return when(position){
@@ -62,6 +85,7 @@ class HomeActivity : AppCompatActivity() {
 
         override fun getCount() = 3
     }
+
     companion object {
         fun newIntent(context: Context) = Intent(context, HomeActivity::class.java)
     }
