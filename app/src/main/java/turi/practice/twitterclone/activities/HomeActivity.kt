@@ -17,14 +17,18 @@ import turi.practice.twitterclone.fragments.HomeFragment
 import turi.practice.twitterclone.fragments.MyActivityFragment
 import turi.practice.twitterclone.fragments.SearchFragment
 import turi.practice.twitterclone.util.DATA_USERS
+import turi.practice.twitterclone.util.User
+import turi.practice.twitterclone.util.loadUrl
 
 class HomeActivity : AppCompatActivity() {
-    private var sectionsPagerAdapter: SectionPagerAdapter? = null
     private val firebaseDB = FirebaseFirestore.getInstance()
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val myActivityFragment = MyActivityFragment()
+
+    private var sectionsPagerAdapter: SectionPagerAdapter? = null
     private var userId = FirebaseAuth.getInstance().currentUser?.uid
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +71,10 @@ class HomeActivity : AppCompatActivity() {
         firebaseDB.collection(DATA_USERS).document(userId!!).get()
             .addOnSuccessListener { documentSnapshot ->
                 homeProgressLayout.visibility = View.GONE
-                user =
+                user = documentSnapshot.toObject(User::class.java)
+                user?.imageUrl?.let {
+                    logo.loadUrl(it, R.drawable.logo)
+                }
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
