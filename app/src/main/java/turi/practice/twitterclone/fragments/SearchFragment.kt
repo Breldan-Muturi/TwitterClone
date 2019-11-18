@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import turi.practice.twitterclone.R
 import turi.practice.twitterclone.adapters.TweetListAdapter
 import turi.practice.twitterclone.listeners.TweetListener
+import turi.practice.twitterclone.listeners.TwitterListenerimpl
 import turi.practice.twitterclone.util.*
 
 class SearchFragment : TwitterFragment() {
@@ -31,6 +32,7 @@ class SearchFragment : TwitterFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listener = TwitterListenerimpl(tweetList, currentUser, callback)
         tweetsAdapter = TweetListAdapter(userId!!, arrayListOf())
         tweetsAdapter?.setListener(listener)
         tweetList?.apply {

@@ -105,6 +105,10 @@ class HomeActivity : AppCompatActivity(), HomeCallback {
         populate()
     }
 
+    override fun onRefresh() {
+        currentFragment.updateList()
+    }
+
     fun populate() {
         homeProgressLayout.visibility = View.VISIBLE
         firebaseDB.collection(DATA_USERS).document(userId!!).get()

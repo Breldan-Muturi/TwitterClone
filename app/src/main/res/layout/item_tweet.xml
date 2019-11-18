@@ -3,7 +3,7 @@
     android:id="@+id/tweetLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -11,8 +11,8 @@
         android:id="@+id/tweetUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/grid_2x"
         android:text="Username"
+        android:layout_marginTop="@dimen/grid_2x"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -31,8 +31,6 @@
         android:layout_marginTop="@dimen/grid_2x"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tweetText" />
 
     <TextView
@@ -52,7 +50,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal">
@@ -78,7 +76,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal">
@@ -90,7 +88,7 @@
                 android:background="@null"
                 android:padding="@dimen/grid_1x"
                 android:scaleType="centerInside"
-                android:src="@drawable/like_inactive" />
+                android:src="@drawable/retweet_inactive" />
 
             <TextView
                 android:id="@+id/tweetRetweetCount"
