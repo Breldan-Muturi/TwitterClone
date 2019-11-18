@@ -19,5 +19,7 @@ class HomeFragment : TwitterFragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun updateList() {
 
+    }
 }

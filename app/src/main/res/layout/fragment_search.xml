@@ -11,6 +11,7 @@
         android:layout_width="@dimen/standard_image"
         android:layout_height="@dimen/standard_image"
         android:src="@drawable/follow_inactive"
+        android:visibility="gone"
         android:elevation="1dp"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,19 +17,22 @@ import turi.practice.twitterclone.R
 import turi.practice.twitterclone.fragments.HomeFragment
 import turi.practice.twitterclone.fragments.MyActivityFragment
 import turi.practice.twitterclone.fragments.SearchFragment
+import turi.practice.twitterclone.fragments.TwitterFragment
+import turi.practice.twitterclone.listeners.HomeCallback
 import turi.practice.twitterclone.util.DATA_USERS
 import turi.practice.twitterclone.util.User
 import turi.practice.twitterclone.util.loadUrl
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), HomeCallback {
+    private var sectionsPagerAdapter: SectionPagerAdapter? = null
+    private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDB = FirebaseFirestore.getInstance()
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val myActivityFragment = MyActivityFragment()
-
-    private var sectionsPagerAdapter: SectionPagerAdapter? = null
     private var userId = FirebaseAuth.getInstance().currentUser?.uid
     private var user: User? = null
+    private var currentFragment: TwitterFragment = homeFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,7 @@ class HomeActivity : AppCompatActivity() {
         container.adapter = sectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
-        tabs.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) {
 
             }
@@ -48,20 +51,39 @@ class HomeActivity : AppCompatActivity() {
             override fun onTabUnselected(p0: TabLayout.Tab?) {
             }
 
-            override fun onTabSelected(p0: TabLayout.Tab?) {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> {
+                        titleBar.visibility = View.VISIBLE
+                        titleBar.text = "Home"
+                        searchBar.visibility = View.GONE
+                        currentFragment = homeFragment
+                    }
+                    1 -> {
+                        titleBar.visibility = View.GONE
+                        searchBar.visibility = View.VISIBLE
+                        currentFragment = searchFragment
+                    }
+                    2 -> {
+                        titleBar.visibility = View.VISIBLE
+                        titleBar.text = "My Activity"
+                        searchBar.visibility = View.GONE
+                        currentFragment = myActivityFragment
+                    }
+                }
             }
         })
 
-        logo.setOnClickListener{view ->
+        logo.setOnClickListener { view ->
             startActivity(ProfileActivity.newIntent(this))
         }
 
-        fab.setOnClickListener{
+        fab.setOnClickListener {
             startActivity(TweetActivity.newIntent(this, userId, user?.username))
         }
-        homeProgressLayout.setOnTouchListener{ v, event -> true }
+        homeProgressLayout.setOnTouchListener { v, event -> true }
         search.setOnEditorActionListener { v, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH) {
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchFragment.newHashtag(v?.text.toString())
             }
             true
@@ -71,14 +93,19 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         userId = FirebaseAuth.getInstance().currentUser?.uid
-        if(userId == null){
+        if (userId == null) {
             startActivity(LoginActivity.newIntent(this))
             finish()
+        } else {
+            populate()
         }
+    }
+
+    override fun onUserUpdated() {
         populate()
     }
 
-    fun populate(){
+    fun populate() {
         homeProgressLayout.visibility = View.VISIBLE
         firebaseDB.collection(DATA_USERS).document(userId!!).get()
             .addOnSuccessListener { documentSnapshot ->
@@ -87,15 +114,23 @@ class HomeActivity : AppCompatActivity() {
                 user?.imageUrl?.let {
                     logo.loadUrl(it, R.drawable.logo)
                 }
+                updateFragmentUser()
             }
             .addOnFailureListener { e ->
                 e.printStackTrace()
                 finish()
             }
     }
-    inner class SectionPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
+
+    fun updateFragmentUser(){
+        homeFragment.setUser(user)
+        searchFragment.setUser(user)
+        myActivityFragment.setUser(user)
+        currentFragment.updateList()
+    }
+    inner class SectionPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         override fun getItem(position: Int): Fragment {
-            return when(position){
+            return when (position) {
                 0 -> homeFragment
                 1 -> searchFragment
                 else -> myActivityFragment

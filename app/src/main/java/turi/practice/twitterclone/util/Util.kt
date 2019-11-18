@@ -9,15 +9,16 @@ import turi.practice.twitterclone.R
 import java.text.DateFormat
 import java.util.*
 
-fun ImageView.loadUrl(url: String?, errorDrawable: Int = R.drawable.empty){
+fun ImageView.loadUrl(url: String?, errorDrawable: Int = R.drawable.empty) {
     context?.let {
         val options = RequestOptions()
             .placeholder(progressDrawable(context))
             .error(errorDrawable)
-            Glide.with(context.applicationContext)
-                .load(url)
-                .apply(options)
-                .into(this)
+
+        Glide.with(context.applicationContext)
+            .load(url)
+            .apply(options)
+            .into(this)
     }
 }
 

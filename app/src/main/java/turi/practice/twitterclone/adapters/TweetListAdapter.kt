@@ -50,15 +50,19 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>): Recycl
         fun bind(userId: String, tweet: Tweet, listener: TweetListener?){
             username.text = tweet.username
             text.text = tweet.text
+
             if (tweet.imageUrl.isNullOrEmpty()){
                 image.visibility = View.GONE
             } else {
                 image.visibility = View.VISIBLE
                 image.loadUrl(tweet.imageUrl)
             }
-            date.text = getDate(tweet.timeStamp)
+
+            date.text = getDate(tweet.timestamp)
+
             likeCount.text = tweet.likes?.size.toString()
             retweetCount.text = tweet.userIds?.size?.minus(1).toString()
+
             layout.setOnClickListener{listener?.onLayoutClicked(tweet)}
             like.setOnClickListener{listener?.onLike(tweet)}
             retweet.setOnClickListener{listener?.onRetweet(tweet)}
@@ -70,12 +74,12 @@ class TweetListAdapter(val userId: String, val tweets: ArrayList<Tweet>): Recycl
             }
 
             if(tweet.userIds?.get(0).equals(userId)){
-                retweet.setImageDrawable(ContextCompat.getDrawable(retweet.context, R.drawable.original))
+                retweet.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.original))
                 retweet.isClickable = false
             } else if (tweet.userIds?.contains(userId) == true){
-                retweet.setImageDrawable(ContextCompat.getDrawable(retweet.context, R.drawable.retweet))
+                retweet.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.retweet))
             } else {
-                retweet.setImageDrawable(ContextCompat.getDrawable(retweet.context, R.drawable.retweet_inactive))
+                retweet.setImageDrawable(ContextCompat.getDrawable(like.context, R.drawable.retweet_inactive))
 
             }
         }

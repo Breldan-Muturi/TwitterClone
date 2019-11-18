@@ -15,7 +15,7 @@ data class Tweet(
     val username: String? = "",
     val text: String? = "",
     val imageUrl: String? = "",
-    val timeStamp: Long? = 0,
+    val timestamp: Long? = 0,
     val hashtags: ArrayList<String>? = arrayListOf(),
     val likes: ArrayList<String>? = arrayListOf()
 )
