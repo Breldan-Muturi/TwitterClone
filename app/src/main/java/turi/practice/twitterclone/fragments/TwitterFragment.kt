@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import turi.practice.twitterclone.adapters.TweetListAdapter
 import turi.practice.twitterclone.listeners.HomeCallback
 import turi.practice.twitterclone.listeners.TweetListener
+import turi.practice.twitterclone.listeners.TwitterListenerimpl
 import turi.practice.twitterclone.util.User
 import java.lang.RuntimeException
 
@@ -16,7 +17,7 @@ abstract class TwitterFragment: Fragment() {
     protected var currentUser: User? = null
     protected val firebaseDB = FirebaseFirestore.getInstance()
     protected val userId = FirebaseAuth.getInstance().currentUser?.uid
-    protected var listener: TweetListener? = null
+    protected var listener: TwitterListenerimpl? = null
     protected var callback: HomeCallback? = null
 
     override fun onAttach(context: Context) {
@@ -30,6 +31,7 @@ abstract class TwitterFragment: Fragment() {
 
     fun setUser(user: User?){
         this.currentUser = user
+        listener?.user = user
     }
 
     abstract fun updateList()
