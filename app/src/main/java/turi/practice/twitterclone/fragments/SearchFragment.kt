@@ -1,6 +1,9 @@
 package turi.practice.twitterclone.fragments
 
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -61,6 +64,7 @@ class SearchFragment : TwitterFragment() {
                     e.printStackTrace()
                     followHashtag.isClickable = true
                 }
+            rotater()
         }
     }
 
@@ -111,4 +115,12 @@ class SearchFragment : TwitterFragment() {
             }
         }
     }
+
+    private fun rotater() {
+        val animator = ObjectAnimator.ofFloat(followHashtag, View.ROTATION, -360f, 0f)
+        animator.duration = 1000
+        animator.disableViewDuringAnimation(followHashtag)
+        animator.start()
+    }
+
 }
